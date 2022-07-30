@@ -2,6 +2,7 @@ import { app } from './main.js'
 import { config as getEnvFromFile } from 'dotenv'
 
 if (process.env.NODE_ENV === undefined) {
+    // eslint-disable-next-line no-console
     console.warn('NODE_ENV is not specified!')
     process.env.NODE_ENV = 'development'
 }

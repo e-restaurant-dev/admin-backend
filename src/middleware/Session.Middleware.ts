@@ -43,7 +43,7 @@ export async function sessionMiddleware(
     }
 
     const sessionId: string | undefined = req.cookies[SID_COOKIE_NAME]
-    const session: Session | null = sessionId ? (await getSession(db, sessionId)) : null
+    const session: Session | null = sessionId ? await getSession(db, sessionId) : null
     if (session === null) {
         const newSession = createSession()
         await addSession(db, newSession)
