@@ -1,5 +1,12 @@
 import express from 'express'
+import cookieParser from 'cookie-parser'
+import { sessionMiddleware } from './middleware/Session.Middleware.js'
 
-const app = express()
+export const app = express()
 
-app.get('/')
+app.use(cookieParser())
+app.use(sessionMiddleware)
+
+app.get('/', (req, res) => {
+    res.send(req.cookies)
+})
