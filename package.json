@@ -11,7 +11,8 @@
     "start:watch": "nodemon ./dist/server.js",
     "dev": "run-p build:watch start:watch",
     "type-check": "tsc --noEmit",
-    "pre-commit": "run-s lint type-check"
+    "pre-commit": "run-s lint type-check",
+    "prepare-husky": "husky install"
   },
   "keywords": [],
   "license": "MIT",
