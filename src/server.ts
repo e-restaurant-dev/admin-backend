@@ -13,6 +13,11 @@ if (process.env.NODE_ENV === 'development') {
 
 const requiredEnvProperties = [
     'ROOT_DOMAIN',
+    'ADMIN_CLIENT_DOMAIN',
+    'PGDATABASE',
+    'PGUSER',
+    'PGPASSWORD',
+    'REDIS_PASSWORD',
 ]
 
 for (const property of requiredEnvProperties) {
@@ -23,8 +28,7 @@ for (const property of requiredEnvProperties) {
     }
 }
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
+app.listen(3001, () => {
     // eslint-disable-next-line no-console
-    console.log('Server is started at the port ' + PORT)
+    console.log('Server is started at the port 3001')
 })
