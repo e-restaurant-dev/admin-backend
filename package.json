@@ -8,7 +8,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "node ./dist/server.js",
-    "start:watch": "nodemon -w ./dist -q ./dist/server.js",
+    "start:watch": "nodemon -r module-alias/register -w ./dist -q ./dist/server.js",
     "dev": "run-p build:watch start:watch",
     "type-check": "tsc --noEmit",
     "pre-commit": "run-s lint type-check",
@@ -19,6 +19,9 @@
   "type": "module",
   "engines": {
     "node": ">=18"
+  },
+  "imports": {
+    "#app/*": "./dist/*"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
@@ -49,9 +52,5 @@
     "node-redis": "^0.1.7",
     "pg": "^8.7.3",
     "pino": "^8.3.1"
-  },
-  "_moduleAliases": {
-    "@root": "./dist",
-    "@components": "./dist/components"
   }
 }
