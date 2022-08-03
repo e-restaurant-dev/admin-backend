@@ -1,9 +1,9 @@
 import { app } from './main.js'
 import { config as getEnvFromFile } from 'dotenv'
+import { logger } from './logger/log.js'
 
 if (process.env.NODE_ENV === undefined) {
-    // eslint-disable-next-line no-console
-    console.warn('NODE_ENV is not specified!')
+    logger.warn('NODE_ENV is not specified!')
     process.env.NODE_ENV = 'development'
 }
 
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const requiredEnvProperties = [
     'ROOT_DOMAIN',
-    'ADMIN_CLIENT_DOMAIN',
+    'ADMIN_CLIENT_URL',
     'PGDATABASE',
     'PGUSER',
     'PGPASSWORD',
@@ -22,13 +22,11 @@ const requiredEnvProperties = [
 
 for (const property of requiredEnvProperties) {
     if (!Object.prototype.hasOwnProperty.call(process.env, property)) {
-        // eslint-disable-next-line no-console
-        console.error(`Required property ${property} not found in process.env!`)
+        logger.error(`Required property ${property} not found in process.env!`)
         process.exit()
     }
 }
 
 app.listen(3001, () => {
-    // eslint-disable-next-line no-console
-    console.log('Server is started at the port 3001')
+    logger.info('Server is started at the port 3001')
 })

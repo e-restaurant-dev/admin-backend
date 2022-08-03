@@ -12,8 +12,11 @@ extends:
   - plugin:import/typescript
   - plugin:security/recommended
 settings:
-  import/resolver:
-    typescript: {}
+  import/resolver: 
+    typescript:
+      extensionAlias:
+        ".js":
+          - ".ts"
 plugins:
   - '@typescript-eslint/eslint-plugin'
 env:
