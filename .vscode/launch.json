@@ -8,14 +8,10 @@
       "type": "node",
       "request": "launch",
       "name": "Debug server",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
       "program": "${workspaceFolder}/src/server.ts",
-      "preLaunchTask": "tsc: build - tsconfig.json",
-      "outFiles": [
-        "${workspaceFolder}/dist/**/*.js"
-      ]
+      "preLaunchTask": "npm: build:dev",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "outputCapture": "std"
     }
   ]
 }

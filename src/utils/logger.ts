@@ -8,6 +8,8 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     const stream = pretty({
         colorize: true,
+        ignore: 'hostname',
+        translateTime: 'yyyy-mm-dd HH:MM:ss.l',
     })
     logger = pino(stream)
 }
