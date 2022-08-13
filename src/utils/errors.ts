@@ -10,7 +10,7 @@ import { exit } from './exit.js'
 import { logger } from './logger.js'
 import { hasOwnProperty } from './misc.js'
 
-export type ErrorCode = string | number;
+type ErrorCode = string | number;
 export interface ErrorPayload {
     message: string;
     code: ErrorCode;

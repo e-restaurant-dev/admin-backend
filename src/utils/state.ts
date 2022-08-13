@@ -34,8 +34,6 @@ class StateConstructor {
     ): NonNullable<StateObject[K]> {
         const val = this.state[key]
         if (val !== undefined) {
-            // We are checking on null just above
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return val!
         }
 

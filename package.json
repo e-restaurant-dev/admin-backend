@@ -53,24 +53,5 @@
     "pg": "^8.7.3",
     "pino": "^8.3.1",
     "redis": "^4.2.0"
-  },
-  "f": {
-    "overrides": [
-      {
-        "files": [
-          "*.ts",
-          "*.tsx"
-        ],
-        "extends": [
-          "plugin:@typescript-eslint/recommended",
-          "plugin:@typescript-eslint/recommended-requiring-type-checking"
-        ],
-        "parserOptions": {
-          "project": [
-            "./tsconfig.json"
-          ]
-        }
-      }
-    ]
   }
 }

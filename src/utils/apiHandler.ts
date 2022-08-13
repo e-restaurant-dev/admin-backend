@@ -15,12 +15,12 @@ export const asyncHandler = <P, ReqBody, ResBody>(
         }
     )
 
-export const successBody = <T>(data: T): ResponseBody<T> => ({
+export const successBody = <T>(payload: T): ResponseBody<T> => ({
     type: ResponseType.success,
-    data,
+    payload,
 })
 
-export const failedBody = <T>(data: T): ResponseBody<T> => ({
+export const failedBody = <T>(payload: T): ResponseBody<T> => ({
     type: ResponseType.failed,
-    data,
+    payload,
 })

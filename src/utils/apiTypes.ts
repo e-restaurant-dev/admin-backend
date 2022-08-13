@@ -5,5 +5,5 @@ export enum ResponseType {
 
 export interface ResponseBody<T> {
     type: ResponseType;
-    data: T;
+    payload: T;
 }

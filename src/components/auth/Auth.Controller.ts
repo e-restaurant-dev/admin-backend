@@ -1,10 +1,8 @@
 import { AuthErrorCode } from '#app/constants/errors.js'
 import { asyncHandler, failedBody, successBody } from '#app/utils/apiHandler.js'
-import { ResponseType } from '#app/utils/apiTypes.js'
-import { AuthError, defaultErrorHandler, ErrorRegistry } from '#app/utils/errors.js'
+import { AuthError, ErrorRegistry } from '#app/utils/errors.js'
 import { Router, RequestHandler } from 'express'
 import {
-    User,
     UserDatabaseTables,
     findUser,
     addUser,
@@ -12,11 +10,15 @@ import {
 
 export const route = Router()
 
-const loginFor = (table: UserDatabaseTables): RequestHandler<any, any, Partial<User>> => asyncHandler(
+interface LoginBody {
+    email: string;
+    password: string;
+}
+const loginFor = (table: UserDatabaseTables): RequestHandler<any, any, LoginBody> => asyncHandler(
     async (req, res) => {
         const user = await findUser(req.body, table, ['password'], 'exclude')
         if (user) {
-            res.send({ type: ResponseType.success, data: user })
+            res.send(successBody(user))
         } else {
             throw new AuthError({ message: 'Failed to login, cannot find such email/password pair', code: AuthErrorCode.FAILED_TO_LOGIN })
         }
