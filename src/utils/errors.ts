@@ -9,6 +9,7 @@ import { ResponseBody } from './apiTypes.js'
 import { exit } from './exit.js'
 import { logger } from './logger.js'
 import { hasOwnProperty } from './misc.js'
+import type { ValidationError as JSONValidationError } from 'jsonschema'
 
 type ErrorCode = string | number;
 export interface ErrorPayload {
@@ -17,7 +18,7 @@ export interface ErrorPayload {
     err?: Error; // original error
 }
 
-export type ErrorHandler<E extends Error = Error> = (err: E, req?: Request, res?: Response<ResponseBody<any>>) => void
+export type ErrorHandler<E extends Error = Error> = (err: E, req?: Request<any, any, any>, res?: Response<ResponseBody<any>>) => void
 
 /**
  * Error types
@@ -27,7 +28,7 @@ export class ApiError extends Error {
     constructor(payload: ErrorPayload) {
         super(payload.message)
         this.payload = payload
-        this.name = 'AbstractApiError'
+        this.name = 'ApiError'
     }
     payload: ErrorPayload
 }
@@ -46,14 +47,20 @@ export class AuthError extends ApiError {
     }
 }
 
+export interface ValidationErrorPayload extends ErrorPayload {
+    errors: Array<JSONValidationError>;
+}
+
 /**
  * For such stuff as 400 error
  */
 export class ValidationError extends ApiError {
-    constructor(payload: ErrorPayload) {
+    constructor(payload: ValidationErrorPayload) {
         super(payload)
+        this.payload = payload
         this.name = 'ValidationError'
     }
+    override payload: ValidationErrorPayload
 }
 
 /**

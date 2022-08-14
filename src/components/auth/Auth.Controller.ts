@@ -1,14 +1,37 @@
-import { AuthErrorCode } from '#app/constants/errors.js'
-import { asyncHandler, failedBody, successBody } from '#app/utils/apiHandler.js'
-import { AuthError, ErrorRegistry } from '#app/utils/errors.js'
 import { Router, RequestHandler } from 'express'
+import { Validator, Schema } from 'jsonschema'
+import { AuthErrorCode, ValidationErrorCode } from '#app/constants/errors.js'
+import { asyncHandler, failedBody, successBody } from '#app/utils/apiHandler.js'
+import { AuthError, ErrorRegistry, ValidationError } from '#app/utils/errors.js'
 import {
     UserDatabaseTables,
     findUser,
     addUser,
 } from './Auth.Model.js'
+import { validationMiddleware } from '#app/middleware/Validation.Middleware.js'
+import { ResponseBody } from '#app/utils/apiTypes.js'
 
 export const route = Router()
+
+const authValidator = new Validator()
+const authSchema: Schema = {
+    id: '/auth',
+    type: 'object',
+    properties: {
+        email: {
+            description: 'email of user',
+            type: 'string',
+            format: 'email',
+        },
+        password: {
+            description: 'password of user',
+            type: 'string',
+            minLength: 5,
+        },
+    },
+    required: ['email', 'password'],
+    additionalProperties: false,
+}
 
 interface LoginBody {
     email: string;
@@ -28,17 +51,22 @@ ErrorRegistry.registerError(AuthErrorCode.FAILED_TO_LOGIN, (err, req, res) => {
     res?.status(403).send(failedBody(err.message))
 })
 
-route.post('/admin/login', loginFor(UserDatabaseTables.AdminUser))
-route.post('/worker/login', loginFor(UserDatabaseTables.WorkerUser))
+route.post('/admin/login', validationMiddleware(authValidator, authSchema), loginFor(UserDatabaseTables.AdminUser))
+route.post('/worker/login', validationMiddleware(authValidator, authSchema), loginFor(UserDatabaseTables.WorkerUser))
 
 interface RegistrationAdminBody {
     email: string;
     password: string;
 }
-route.post('/admin/registration', asyncHandler<void, RegistrationAdminBody, null>(async (req, res) => {
-    await addUser(req.body, UserDatabaseTables.AdminUser)
-    res.send(successBody(null))
-}))
+
+// <void, RegistrationAdminBody, null>
+route.post<void, ResponseBody<null>, RegistrationAdminBody>(
+    '/admin/registration',
+    validationMiddleware(authValidator, authSchema),
+    asyncHandler(async (req, res) => {
+        await addUser(req.body as any, UserDatabaseTables.AdminUser)
+        res.send(successBody(null))
+    }))
 
 route.get('/user')
 

@@ -1,7 +1,7 @@
 import { NextFunction, RequestHandler, Response, Request } from 'express'
 import { ResponseBody, ResponseType } from './apiTypes.js'
 
-export const asyncHandler = <P, ReqBody, ResBody>(
+export const asyncHandler = <P, ResBody, ReqBody>(
     handler: (
         req: Request<P, ResponseBody<ResBody>, ReqBody>,
         res: Response<ResponseBody<ResBody>>,
