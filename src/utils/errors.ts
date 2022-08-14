@@ -62,7 +62,7 @@ export class ValidationError extends ApiError {
 
 export const printError: ErrorHandler<Error> = (err: Error) => {
     if (err instanceof ApiError) {
-        if (err.name === 'CriticalError') {
+        if (err instanceof CriticalError) {
             const stack = err.payload.err?.stack ?? err.stack
             logger.error({
                 err: {
@@ -87,12 +87,7 @@ export const defaultErrorHandler = (err: any, req?: Request, res?: Response) => 
         logger.error(err, 'Unexpected literal was thrown')
     }
 
-    if (res) {
-        const code = err.name === 'AuthError'
-            ? 403
-            : 500
-        res.status(code).send(failedBody('fail to process the request successfully'))
-    }
+    res?.status(500).send(failedBody('fail to process the request successfully'))
 }
 
 
@@ -105,7 +100,7 @@ class ErrorRegistryConstructor {
      * @param errorHandler Error handler
      * @returns handle error of ErrorRegistry
      */
-    registerError<E extends ApiError = ApiError>(key: ErrorCode, errorHandler: ErrorHandler<E> = defaultErrorHandler) {
+    registerError<E extends ApiError>(key: ErrorCode, errorHandler: ErrorHandler<E> = defaultErrorHandler) {
         this.errorHandlers[key] = errorHandler
         return this.handleError
     }

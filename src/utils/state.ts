@@ -1,9 +1,9 @@
+import type { Application } from 'express'
+import type { Server } from 'http'
 import type { CacheClient } from '#app/data/cache.js'
 import type { DatabaseClient } from '#app/data/database.js'
 import { CriticalErrorCode } from '#app/constants/errors.js'
 import { ErrorRegistry, CriticalError } from './errors.js'
-import { Application } from 'express'
-import { Server } from 'http'
 
 export interface StateObject {
     database?: DatabaseClient;
@@ -17,7 +17,7 @@ export type StateKeys = keyof StateObject
 class StateConstructor {
     private state: StateObject = {}
 
-    set<K extends StateKeys>(key: K, value: StateObject[K]): StateObject[K] {
+    set<K extends StateKeys>(key: K, value: NonNullable<StateObject[K]>): StateObject[K] {
         return this.state[key] = value
     }
 

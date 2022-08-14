@@ -1,5 +1,5 @@
 import { default as pino, Logger } from 'pino'
-import pretty from 'pino-pretty'
+import { default as pretty } from 'pino-pretty'
 
 export let logger: Logger
 
