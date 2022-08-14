@@ -64,7 +64,7 @@ route.post<void, ResponseBody<null>, RegistrationAdminBody>(
     '/admin/registration',
     validationMiddleware(authValidator, authSchema),
     asyncHandler(async (req, res) => {
-        await addUser(req.body as any, UserDatabaseTables.AdminUser)
+        await addUser(req.body, UserDatabaseTables.AdminUser)
         res.send(successBody(null))
     }))
 
