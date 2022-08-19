@@ -7,6 +7,7 @@ import {
     findUser,
     addUser,
 } from './Auth.Model.js'
+import * as Session from '#app/utils/sessions.js'
 
 export const route = Router()
 
@@ -18,6 +19,7 @@ const loginFor = (table: UserDatabaseTables): RequestHandler<any, any, LoginBody
     async (req, res) => {
         const user = await findUser(req.body, table, ['password'], 'exclude')
         if (user) {
+            Session.set(req.session.id, { userID: user.id! })
             res.send(successBody(user))
         } else {
             throw new AuthError({ message: 'Failed to login, cannot find such email/password pair', code: AuthErrorCode.FAILED_TO_LOGIN })
@@ -36,7 +38,8 @@ interface RegistrationAdminBody {
     password: string;
 }
 route.post('/admin/registration', asyncHandler<void, RegistrationAdminBody, null>(async (req, res) => {
-    await addUser(req.body, UserDatabaseTables.AdminUser)
+    const user = await addUser(req.body, UserDatabaseTables.AdminUser)
+    Session.set(req.session.id, { userID: user.id! })
     res.send(successBody(null))
 }))
 
