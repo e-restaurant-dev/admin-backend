@@ -15,12 +15,12 @@ export async function session(
         return
     }
 
-    req.session = null
+
     const sessionId: string | undefined = req.cookies[SID_COOKIE_NAME]
 
     if (sessionId === undefined) {
         const sessionId = generateSID()
-
+        req.session = { id: sessionId, data: null }
         const cookieAge = new Date()
         cookieAge.setFullYear(cookieAge.getFullYear() + 1)
 
@@ -34,8 +34,7 @@ export async function session(
             }),
         )
     } else {
-        req.session = await Session.get(sessionId)
+        req.session = { id: sessionId, data: await Session.get(sessionId) }
     }
-
     next()
 }
