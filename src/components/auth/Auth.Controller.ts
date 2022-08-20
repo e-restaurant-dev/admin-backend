@@ -39,7 +39,7 @@ interface RegistrationAdminBody {
 }
 route.post('/admin/registration', asyncHandler<void, RegistrationAdminBody, null>(async (req, res) => {
     const user = await addUser(req.body, UserDatabaseTables.AdminUser)
-    Session.set(req.session.id, { userID: user.id! })
+    Session.set(req.session.id, { userID: user.id })
     res.send(successBody(null))
 }))
 

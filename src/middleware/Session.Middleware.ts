@@ -36,6 +36,5 @@ export async function session(
     } else {
         req.session = { id: sessionId, data: await Session.get(sessionId) }
     }
-    console.log(req.session)
     next()
 }
