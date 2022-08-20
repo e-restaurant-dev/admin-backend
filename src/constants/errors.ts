@@ -10,3 +10,7 @@ export enum CriticalErrorCode {
 export enum AuthErrorCode {
     FAILED_TO_LOGIN = 2000,
 }
+
+export enum ValidationErrorCode {
+    DEFAULT_VALIDATION_ERROR = 3000,
+}

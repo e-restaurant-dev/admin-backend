@@ -9,6 +9,9 @@ import * as Cache from './data/cache.js'
 import { State } from './utils/state.js'
 import { errorHandler } from './middleware/ErrorHandler.Middleware.js'
 import bodyParser from 'body-parser'
+import { ErrorRegistry } from './utils/errors.js'
+import { ValidationErrorCode } from './constants/errors.js'
+import { defaultValidationErrorHandler } from './middleware/Validation.Middleware.js'
 
 export const app = express()
 
@@ -18,6 +21,10 @@ app.use(bodyParser.json())
 
 app.use('/auth', AuthRouter)
 app.use(errorHandler)
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+ErrorRegistry.registerError(ValidationErrorCode.DEFAULT_VALIDATION_ERROR, defaultValidationErrorHandler)
 
 export async function configureState() {
     const databaseClient = await DB.connect(DB.instance())
