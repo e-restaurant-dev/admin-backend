@@ -1,8 +1,8 @@
 import { Router, RequestHandler } from 'express'
 import { Validator, Schema } from 'jsonschema'
-import { AuthErrorCode, ValidationErrorCode } from '#app/constants/errors.js'
+import { AuthErrorCode } from '#app/constants/errors.js'
 import { asyncHandler, failedBody, successBody } from '#app/utils/apiHandler.js'
-import { AuthError, ErrorRegistry, ValidationError } from '#app/utils/errors.js'
+import { AuthError, ErrorRegistry } from '#app/utils/errors.js'
 import {
     UserDatabaseTables,
     findUser,
